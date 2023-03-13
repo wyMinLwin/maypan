@@ -12,7 +12,7 @@ const App = () => {
  
   return (
     <>
-      <div className='max-w-screen min-h-screen' style={{backgroundColor:'#C7D8C6'}}>
+      <div className='max-w-screen min-h-screen bg-primary' >
         {location.pathname !== '/' && <Navbar />}
         <Routes>
           <Route path='/' element={<PreloaderPage />} />
