@@ -6,41 +6,20 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons'
 const NavBar = () => {
   return (
-    // <div className='flex flex-row items-center drop-shadow-sm shadow-sm py-3 px-5 justify-between'>
-    //     <Link to={'/'} className='text-lg font-semibold' style={{color:'#ff5035'}} >MayPan</Link>
-    //     <div className='sm:block hidden'>
-    //         <NavLink
-    //          style={{color:'#ff5035',}}  
-    //         className={({ isActive}) =>
-    //        `${isActive ? 'text-lg opacity-100' : 'text-base opacity-80'} ease-in-out duration-100 hover:opacity-90 mx-2 font-semibold `
-    //         }
-    //         to={'/home'}>Home</NavLink>
-    //         <NavLink
-    //          style={{color:'#ff5035',}} 
-    //         className={({ isActive}) =>
-    //        `${isActive ? 'text-lg opacity-100' : 'text-base opacity-80'} ease-in-out duration-100 hover:opacity-90 mx-2 font-semibold `
-    //         }
-    //         to={'/products'}>Products</NavLink>
-    //         <NavLink
-    //          style={{color:'#ff5035',}}  
-    //         className={({ isActive}) =>
-    //        `${isActive ? 'text-lg opacity-100' : 'text-base opacity-80'} ease-in-out duration-100 hover:opacity-90 mx-2 font-semibold `
-    //         }
-    //         to={'/about'}>About</NavLink>
-    //     </div>
-    // </div>
     <>
     <Navbar 
-      className='bg-primary drop-shadow-md'
+    style={{background:'#C7D8C6'}}
+      className='bg-primary drop-shadow-md sticky top-0 left-0 right-0 '
+      
       fluid={true}
-      rounded={false}
+      rounded={true}
     >
       <Navbar.Brand href='/'>
       <span className="self-center whitespace-nowrap text-xl font-semibold text-secondary">
         MayPan
       </span>
       </Navbar.Brand>
-      <div className="flex md:order-2 my-auto text-secondary">
+      <div className="flex md:order-2 my-3 text-secondary">
         <button className='relative '>
           <FontAwesomeIcon className='mx-3 ' icon={faHeart} />
           <div className='absolute top-1 md:-top-1 right-1  text-xs font-semibold'>1</div>
