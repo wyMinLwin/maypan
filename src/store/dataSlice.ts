@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type fetchProductsType = {
+export type fetchProductsType = {
     id: string,
     title: string,
     description: string,
@@ -25,12 +25,14 @@ type loadingType = "idle"|"waiting"|"success"|"fail";
 
 type initialStateType = {
     products: fetchProductsType[],
-    loadingStatus: loadingType 
+    loadingStatus: loadingType ,
+    searchResult: fetchProductsType[],
 } 
 
 const initialState:initialStateType= {
     products:[],
-    loadingStatus:"idle"
+    loadingStatus:"idle",
+    searchResult:[],
 }
 
 export const fetchDataFromDummy = createAsyncThunk('data/fetchDataFromDummy',async () => {
@@ -45,7 +47,11 @@ export const fetchDataFromDummy = createAsyncThunk('data/fetchDataFromDummy',asy
 const dataSlice = createSlice({
     name:'data',
     initialState,
-    reducers:{},
+    reducers:{
+        searchByName: (state,action:PayloadAction<string>) => {
+            state.searchResult = state.products.filter(item => item.title.toLocaleLowerCase().search(action.payload.toLocaleLowerCase()) !== -1)
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchDataFromDummy.pending,(state) => {
             state.loadingStatus = 'waiting'
