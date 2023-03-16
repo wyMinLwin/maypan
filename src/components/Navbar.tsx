@@ -4,7 +4,10 @@ import {Navbar, Button} from 'flowbite-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons'
+import { useAppDispatch } from '../store'
+import dataSlice from '../store/dataSlice'
 const NavBar = () => {
+  const dispatch = useAppDispatch();
   return (
     <>
     <Navbar 
@@ -20,12 +23,17 @@ const NavBar = () => {
       </span>
       </Navbar.Brand>
       <div className="flex md:order-2 my-3 text-secondary">
-        <button className='relative '>
-          <FontAwesomeIcon className='mx-3 ' icon={faHeart} />
+        <button
+        onClick={() => dispatch(dataSlice.actions.controlModel())}
+        className='relative '>
+          <FontAwesomeIcon className='mx-3 ' fontSize={20} icon={faHeart} />
           <div className='absolute top-1 md:-top-1 right-1  text-xs font-semibold'>1</div>
         </button>
-        <button className='relative '>
-          <FontAwesomeIcon className='mx-3 ' icon={faBasketShopping} />
+
+        <button className='relative '
+        onClick={() => dispatch(dataSlice.actions.controlModel())}
+        >
+          <FontAwesomeIcon className='mx-3 ' fontSize={20} icon={faBasketShopping} />
           <div className='absolute top-1 md:-top-1 right-1  text-xs font-semibold'>1</div>
         </button>
         <Navbar.Toggle className='bg-transparent border-0 ml-2 text-secondary' />

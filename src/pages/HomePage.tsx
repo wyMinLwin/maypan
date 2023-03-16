@@ -10,7 +10,7 @@ const HomePage = () => {
           Locally Producted Delivery Direct To Your Door
         </header>
         <p className=' text-base font-light mb-5'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis adipisci ducimus accusamus expedita atque iusto reprehenderit vel ex obcaecati totam?</p>
-        <Link className='p-2 rounded-lg w-fit my-5 mx-auto text-white font-semibold bg-secondary' to={'/products'}>Get Start</Link>
+        <Link className='p-2 rounded-lg w-fit my-5 mx-auto text-white font-semibold bg-secondary hover:translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500' to={'/products'}>Get Start</Link>
       </div>
       <img className='w-10/12 md:w-7/12 lg:1/2 xl:w-1/3 mt-auto mx-auto bg-slate-300 pt-10 rounded-t-full' src={ShopImage} alt='shop' />
     </div>

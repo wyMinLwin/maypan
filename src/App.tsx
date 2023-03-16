@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route, useLocation,Routes } from 'react-router-dom'
+import CartModal from './components/CartModal'
 import Navbar from './components/Navbar'
+import WishlistModel from './components/WishlistModel'
 import AboutPage from './pages/AboutPage'
 import HomePage from './pages/HomePage'
 import PreloaderPage from './pages/PreloaderPage'
@@ -13,6 +15,8 @@ const App = () => {
   return (
     <>
       <div className='max-w-screen min-h-screen bg-primary' >
+        <CartModal />
+        <WishlistModel />
         {location.pathname !== '/' && <Navbar />}
         <Routes>
           <Route path='/' element={<PreloaderPage />} />

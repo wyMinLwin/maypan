@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type fetchProductsType = {
+export interface fetchProductsType  {
     id: string,
     title: string,
     description: string,
@@ -11,7 +11,9 @@ export type fetchProductsType = {
     brand: string,
     category: string,
     thumbnail: string,
-    images: string[]
+    images: string[],
+    addedToCart: boolean,
+    addedToFav: boolean,
 }
 
 type fetchDataType = {
@@ -27,12 +29,18 @@ type initialStateType = {
     products: fetchProductsType[],
     loadingStatus: loadingType ,
     searchResult: fetchProductsType[],
+    modelOpen:boolean
+    cart:fetchProductsType[];
+    fav:fetchProductsType[];
 } 
 
 const initialState:initialStateType= {
     products:[],
     loadingStatus:"idle",
     searchResult:[],
+    modelOpen:false,
+    cart:[],
+    fav:[],
 }
 
 export const fetchDataFromDummy = createAsyncThunk('data/fetchDataFromDummy',async () => {
@@ -50,6 +58,45 @@ const dataSlice = createSlice({
     reducers:{
         searchByName: (state,action:PayloadAction<string>) => {
             state.searchResult = state.products.filter(item => item.title.toLocaleLowerCase().search(action.payload.toLocaleLowerCase()) !== -1)
+        },
+        controlModel: (state) => {
+            state.modelOpen = !state.modelOpen
+        },
+        addToCart: (state,action:PayloadAction<string>) => {
+            state.products = state.products.map(item => {
+    
+                if (item.id === action.payload) {
+                    return {...item,addedToCart:true}
+                }
+                return {...item}
+            })
+        },
+        addToFav: (state,action:PayloadAction<string>) => {
+            state.products = state.products.map(item => {
+    
+                if (item.id === action.payload) {
+                    return {...item,addedToFav:true}
+                }
+                return {...item}
+            })
+        },
+        removeFromCart: (state,action:PayloadAction<string>) => {
+            state.products = state.products.map(item => {
+    
+                if (item.id === action.payload) {
+                    return {...item,addedToCart:false}
+                }
+                return {...item}
+            })
+        },
+        removeFromFav: (state,action:PayloadAction<string>) => {
+            state.products = state.products.map(item => {
+    
+                if (item.id === action.payload) {
+                    return {...item,addedToFav:false}
+                }
+                return {...item}
+            })
         }
     },
     extraReducers: (builder) => {
@@ -57,7 +104,7 @@ const dataSlice = createSlice({
             state.loadingStatus = 'waiting'
         }),
         builder.addCase(fetchDataFromDummy.fulfilled,(state,action:PayloadAction<fetchDataType>) => {
-            state.products = action.payload.products;
+            state.products = action.payload.products.map(item => ({...item,addedToCart:false,addedToFav:false}));
             state.loadingStatus = 'success'
         })
         builder.addCase(fetchDataFromDummy.rejected,(state) => {

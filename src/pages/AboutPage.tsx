@@ -10,7 +10,7 @@ const AboutPage = () => {
       </div>
       <img className=' mx-auto' src={SuperMarket} alt='supermarket'/>
       <div className='grid md:grid-cols-2 py-3'>
-        <button className='w-fit h-fit p-2 rounded-r-full rounded-l-full bg-secondary m-auto my-auto  md:mr-auto text-white font-semibold'>Partner With Us</button>
+        <button className='hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500 w-fit h-fit p-2 rounded-r-full rounded-l-full bg-secondary m-auto my-auto  md:mr-auto text-white font-semibold'>Partner With Us</button>
         <div className='my-auto grid grid-cols-3 grid-flow-row border-black' style={{borderWidth:1,borderLeft:'none',borderRight:'none'}}>
           <div className='flex-col justify-center items-center mx-auto font-semibold py-2'>
             <div><span className='text-green-700'>6+</span> Years</div>

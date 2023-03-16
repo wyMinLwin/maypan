@@ -4,19 +4,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons'
-import { fetchProductsType } from '../store/dataSlice'
+import dataSlice, { fetchProductsType } from '../store/dataSlice'
+import { useAppDispatch } from '../store'
 
 type ProductCardProps  = {
     data:fetchProductsType
 }
 
 const ProductCard = (props:ProductCardProps) => {
-    const [cartAdded,setCartAdded] = useState(false);
-    const [favAdded,setFavAdded] = useState(false);
+    const [cartAdded,setCartAdded] = useState(props.data.addedToCart);
+    const [favAdded,setFavAdded] = useState(props.data.addedToFav);
+    const dispatch = useAppDispatch();
 
   return (
     <div>
-        <Card>
+        <Card
+        style={{backgroundColor:'#C7D8C6',borderWidth:0,boxShadow:' 1px 1px 5px 3px rgba(0,0,0,0.15'}}
+         >
             <img src={props.data.thumbnail} className='h-60' />
             <div className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {props.data.title}
@@ -29,33 +33,42 @@ const ProductCard = (props:ProductCardProps) => {
                 <div className='font-semibold'>{props.data.price} $</div>
             </div>
             <div className='flex flex-col md:mr-auto justify-center items-center text-lg'>
-            <div
-            // onMouseEnter={() => setFavAdded(prev => !prev)}
-            // onMouseLeave={() => setFavAdded(prev => !prev)}
-            onClick={() => setFavAdded(prev => !prev)}
-            className={`${favAdded ?'bg-white ' :'bg-secondary '} border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-lg my-1 mr-auto p-1 rounded-lg px-2`} >
-                Add To Wishlist<FontAwesomeIcon className='ml-2' icon={faHeart}  />
-            </div>
-            <div
-            // onMouseEnter={() => setCartAdded(prev => !prev)}
-            // onMouseLeave={() => setCartAdded(prev => !prev)}
-            onClick={() => setCartAdded(prev => !prev)}
-            className={`${cartAdded ?'bg-white ' :'bg-secondary '} border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-lg my-1 mr-auto p-1 rounded-lg px-2`} >
-                Add To Cart<FontAwesomeIcon className='ml-2' icon={faBasketShopping}  />
-            </div>
-            {/* <Button 
-            className='my-1 mr-auto'
-            outline={favAdded}
-            onClick={() => {
-                setFavAdded(prev => !prev)
-            }}
-            gradientDuoTone="pinkToOrange"
-            >Add To Wishlist<FontAwesomeIcon className='ml-2' icon={faHeart}  /></Button>
-            <Button 
-            className='my-1 mr-auto'
-            outline={true}
-            gradientDuoTone="pinkToOrange"
-            >Add To Cart<FontAwesomeIcon className='ml-2' icon={faBasketShopping}  /></Button> */}
+                {   favAdded 
+                    ?<div
+                    onClick={() => {
+                        setFavAdded(prev => !prev)
+                        dispatch(dataSlice.actions.removeFromFav(props.data.id))
+                    }}
+                    className={`bg-primary  border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500  my-1 mr-auto p-1 rounded-lg px-2`} >
+                        Remove from Wishlist<FontAwesomeIcon className='ml-2' icon={faHeart}  />
+                    </div>
+                    :<div
+                    onClick={() => {
+                        setFavAdded(prev => !prev)
+                        dispatch(dataSlice.actions.addToFav(props.data.id))
+                    }}
+                    className={`bg-secondary border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500  my-1 mr-auto p-1 rounded-lg px-2`} >
+                        Add to Wishlist<FontAwesomeIcon className='ml-2' icon={faHeart}  />
+                    </div>
+                }
+                {   cartAdded 
+                    ?<div
+                    onClick={() => {
+                        setCartAdded(prev => !prev)
+                        dispatch(dataSlice.actions.removeFromCart(props.data.id))
+                    }}
+                    className={`bg-primary  border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500  my-1 mr-auto p-1 rounded-lg px-2`} >
+                        Remove from Cart<FontAwesomeIcon className='ml-2' icon={faBasketShopping}  />
+                    </div>
+                    :<div
+                    onClick={() => {
+                        setCartAdded(prev => !prev)
+                        dispatch(dataSlice.actions.addToCart(props.data.id))
+                    }}
+                    className={`bg-secondary border-2 border-secondary hover:-translate-y-0.5 ease-in-out duration-75 hover:shadow-md active:shadow-lg hover:shadow-gray-500  my-1 mr-auto p-1 rounded-lg px-2`} >
+                        Add to Cart<FontAwesomeIcon className='ml-2' icon={faBasketShopping}  />
+                    </div>
+                }
             </div>
         </Card>
     </div>
