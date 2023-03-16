@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons'
 import dataSlice, { fetchProductsType } from '../store/dataSlice'
-import { useAppDispatch } from '../store'
+import { useAppDispatch, useAppSelector } from '../store'
 
 type ProductCardProps  = {
     data:fetchProductsType
@@ -15,6 +15,8 @@ const ProductCard = (props:ProductCardProps) => {
     const [cartAdded,setCartAdded] = useState(props.data.addedToCart);
     const [favAdded,setFavAdded] = useState(props.data.addedToFav);
     const dispatch = useAppDispatch();
+    const cart = useAppSelector(state => state.data.cart)
+    console.log(cart)
 
   return (
     <div>

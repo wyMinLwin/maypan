@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface fetchProductsType  {
+export type fetchProductsType = {
     id: string,
     title: string,
     description: string,
@@ -29,9 +29,9 @@ type initialStateType = {
     products: fetchProductsType[],
     loadingStatus: loadingType ,
     searchResult: fetchProductsType[],
-    modelOpen:boolean
-    cart:fetchProductsType[];
-    fav:fetchProductsType[];
+    modelOpen:boolean,
+    cart:(fetchProductsType & {quantity:number}) [],
+    fav:fetchProductsType[],
 } 
 
 const initialState:initialStateType= {
@@ -64,8 +64,8 @@ const dataSlice = createSlice({
         },
         addToCart: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-    
                 if (item.id === action.payload) {
+                    state.cart = [...state.cart,{...item,quantity:1}]
                     return {...item,addedToCart:true}
                 }
                 return {...item}
@@ -73,7 +73,7 @@ const dataSlice = createSlice({
         },
         addToFav: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-    
+                state.fav = [...state.fav,item]
                 if (item.id === action.payload) {
                     return {...item,addedToFav:true}
                 }
@@ -82,8 +82,8 @@ const dataSlice = createSlice({
         },
         removeFromCart: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-    
                 if (item.id === action.payload) {
+                    state.cart = state.cart.filter(item => item.id !== action.payload)
                     return {...item,addedToCart:false}
                 }
                 return {...item}
@@ -91,13 +91,13 @@ const dataSlice = createSlice({
         },
         removeFromFav: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-    
+                state.fav = state.fav.filter(item => item.id !== action.payload)
                 if (item.id === action.payload) {
                     return {...item,addedToFav:false}
                 }
                 return {...item}
             })
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchDataFromDummy.pending,(state) => {
