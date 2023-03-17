@@ -4,10 +4,12 @@ import {Navbar, Button} from 'flowbite-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons'
-import { useAppDispatch } from '../store'
+import { useAppDispatch, useAppSelector } from '../store'
 import dataSlice from '../store/dataSlice'
 const NavBar = () => {
   const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(state => state.data.cart)
+  const wishlistItems = useAppSelector(state => state.data.wishlist)
   return (
     <>
     <Navbar 
@@ -24,17 +26,17 @@ const NavBar = () => {
       </Navbar.Brand>
       <div className="flex md:order-2 my-3 text-secondary">
         <button
-        onClick={() => dispatch(dataSlice.actions.controlModel())}
+        onClick={() => dispatch(dataSlice.actions.controlModel({type:"ON",tab:"WISHLIST"}))}
         className='relative '>
-          <FontAwesomeIcon className='mx-3 ' fontSize={20} icon={faHeart} />
-          <div className='absolute top-1 md:-top-1 right-1  text-xs font-semibold'>1</div>
+          <FontAwesomeIcon className='mx-3 ' fontSize={16} icon={faHeart} />
+          <div className='absolute top-1 md:-top-2 right-1  text-xs font-semibold'>{wishlistItems.length < 1 ? '' :wishlistItems.length}</div>
         </button>
 
         <button className='relative '
-        onClick={() => dispatch(dataSlice.actions.controlModel())}
+        onClick={() => dispatch(dataSlice.actions.controlModel({type:"ON",tab:"CART"}))}
         >
-          <FontAwesomeIcon className='mx-3 ' fontSize={20} icon={faBasketShopping} />
-          <div className='absolute top-1 md:-top-1 right-1  text-xs font-semibold'>1</div>
+          <FontAwesomeIcon className='mx-3 ' fontSize={16} icon={faBasketShopping} />
+          <div className='absolute top-1 md:-top-2 right-1  text-xs font-semibold'>{cartItems.length < 1 ? '' :cartItems.length}</div>
         </button>
         <Navbar.Toggle className='bg-transparent border-0 ml-2 text-secondary' />
       </div>

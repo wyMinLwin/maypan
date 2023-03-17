@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import {Card, Button} from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
+import {Card} from 'flowbite-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
@@ -15,8 +15,11 @@ const ProductCard = (props:ProductCardProps) => {
     const [cartAdded,setCartAdded] = useState(props.data.addedToCart);
     const [favAdded,setFavAdded] = useState(props.data.addedToFav);
     const dispatch = useAppDispatch();
-    const cart = useAppSelector(state => state.data.cart)
-    console.log(cart)
+    const cartItems = useAppSelector(state => state.data.cart)
+    useEffect(() => {
+        setCartAdded(props.data.addedToCart)
+        setFavAdded(props.data.addedToFav)
+    },[cartItems])
 
   return (
     <div>

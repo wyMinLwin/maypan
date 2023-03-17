@@ -29,18 +29,20 @@ type initialStateType = {
     products: fetchProductsType[],
     loadingStatus: loadingType ,
     searchResult: fetchProductsType[],
-    modelOpen:boolean,
+    cartModelOpen:boolean,
+    wishlistModelOpen:boolean,
     cart:(fetchProductsType & {quantity:number}) [],
-    fav:fetchProductsType[],
+    wishlist:fetchProductsType[],
 } 
 
 const initialState:initialStateType= {
     products:[],
     loadingStatus:"idle",
     searchResult:[],
-    modelOpen:false,
+    cartModelOpen:false,
+    wishlistModelOpen:false,
     cart:[],
-    fav:[],
+    wishlist:[],
 }
 
 export const fetchDataFromDummy = createAsyncThunk('data/fetchDataFromDummy',async () => {
@@ -59,13 +61,25 @@ const dataSlice = createSlice({
         searchByName: (state,action:PayloadAction<string>) => {
             state.searchResult = state.products.filter(item => item.title.toLocaleLowerCase().search(action.payload.toLocaleLowerCase()) !== -1)
         },
-        controlModel: (state) => {
-            state.modelOpen = !state.modelOpen
+        controlModel: (state,action:PayloadAction<{type:string,tab:string}>) => {
+            if (action.payload.type === 'ON') {
+                if (action.payload.tab === 'CART') {
+                    state.cartModelOpen =!state.cartModelOpen
+                } else {
+                    state.wishlistModelOpen = !state.wishlistModelOpen
+                }
+            } else {
+                if (action.payload.tab === 'CART') {
+                    state.cartModelOpen =!state.cartModelOpen
+                } else {
+                    state.wishlistModelOpen = !state.wishlistModelOpen
+                }
+            }
         },
         addToCart: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
                 if (item.id === action.payload) {
-                    state.cart = [...state.cart,{...item,quantity:1}]
+                    state.cart = [{...item,quantity:1},...state.cart]
                     return {...item,addedToCart:true}
                 }
                 return {...item}
@@ -73,8 +87,8 @@ const dataSlice = createSlice({
         },
         addToFav: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-                state.fav = [...state.fav,item]
                 if (item.id === action.payload) {
+                    state.wishlist = [item,...state.wishlist]
                     return {...item,addedToFav:true}
                 }
                 return {...item}
@@ -91,13 +105,19 @@ const dataSlice = createSlice({
         },
         removeFromFav: (state,action:PayloadAction<string>) => {
             state.products = state.products.map(item => {
-                state.fav = state.fav.filter(item => item.id !== action.payload)
+                state.wishlist = state.wishlist.filter(item => item.id !== action.payload)
                 if (item.id === action.payload) {
                     return {...item,addedToFav:false}
                 }
                 return {...item}
             })
         },
+        removeAllFromCart: (state) => {
+            state.products = state.products.map(item => (
+                {...item,addedToCart:false}
+            ))
+            state.cart = [];
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchDataFromDummy.pending,(state) => {
